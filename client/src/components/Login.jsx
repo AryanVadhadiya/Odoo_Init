@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,12 +24,17 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log('Login submitted:', formData);
-    }, 1500);
+    const result = await login(formData.email, formData.password);
+    
+    if (result.success) {
+      navigate('/');
+    } else {
+      setError(result.message);
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -50,6 +59,11 @@ const Login = () => {
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Sign in to your account to continue
               </p>
+              {error && (
+                <div className="mt-2 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
+                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                </div>
+              )}
             </div>
 
             {/* Form */}

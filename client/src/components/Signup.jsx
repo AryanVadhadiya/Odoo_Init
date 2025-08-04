@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Signup = () => {
+  const { signup } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -12,6 +15,7 @@ const Signup = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -64,17 +68,23 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
       return;
     }
     
     setIsLoading(true);
+    setError('');
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      console.log('Signup submitted:', formData);
-    }, 1500);
+    const { confirmPassword, agreeToTerms, ...signupData } = formData;
+    const result = await signup(signupData);
+    
+    if (result.success) {
+      navigate('/');
+    } else {
+      setError(result.message);
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -99,6 +109,11 @@ const Signup = () => {
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Create your account and start your journey
               </p>
+              {error && (
+                <div className="mt-2 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
+                  <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                </div>
+              )}
             </div>
 
             {/* Form */}
