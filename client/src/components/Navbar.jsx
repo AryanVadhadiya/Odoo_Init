@@ -76,9 +76,12 @@ const Navbar = () => {
             {/* Auth buttons */}
             {user ? (
               <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-700 dark:text-gray-300">
-                  Welcome, {user.firstName}!
-                </span>
+                <Link
+                  to="/dashboard"
+                  className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Dashboard
+                </Link>
                 <button
                   onClick={() => {
                     logout();
@@ -159,9 +162,13 @@ const Navbar = () => {
               <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                 {user ? (
                   <>
-                    <div className="px-3 py-2 text-sm text-gray-700 dark:text-gray-300">
-                      Welcome, {user.firstName}!
-                    </div>
+                    <Link
+                      to="/dashboard"
+                      className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 mb-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
                     <button
                       onClick={() => {
                         logout();
