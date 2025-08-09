@@ -213,6 +213,9 @@ const Signup = () => {
                           {getPasswordStrengthText()}
                         </span>
                       </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Password must contain at least one lowercase, uppercase, and number
+                      </p>
                     </div>
                   )}
                 </div>

@@ -71,10 +71,8 @@ app.use('*', (req, res) => {
   });
 });
 
-// Error handling middleware
 app.use(errorHandler);
 
-// Database connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hackfest_db');
@@ -85,7 +83,6 @@ const connectDB = async () => {
   }
 };
 
-// Start server
 const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   await connectDB();
@@ -98,9 +95,7 @@ const startServer = async () => {
 
 startServer();
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
   console.log(`Error: ${err.message}`);
-  // Close server & exit process
   process.exit(1);
 }); 
